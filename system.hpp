@@ -92,6 +92,12 @@ public:
 		while ((millis() - start_time < milliseconds_for_disarm)
 				&& state == State::WAIT_FOR_DISARM)
 		{
+			// Keep tracking motion in inner loop and turn on LED if necessary.
+			if (const auto motion_read = digitalRead(motion_sensor); motion_read == HIGH)
+				digitalWrite(leds::yellow, HIGH);
+			else
+				digitalWrite(leds::yellow, LOW);
+
 			const uint32_t elapsed_secs = (millis() - start_time) / 1000;
 			const uint32_t remaining_secs = (milliseconds_for_disarm / 1000) - elapsed_secs;
 
@@ -154,6 +160,12 @@ public:
 		while ((millis() - start_time < milliseconds_for_exit)
 				&& state == State::WAIT_FOR_EXIT)
 		{
+			// Keep tracking motion in inner loop and turn on LED if necessary.
+			if (const auto motion_read = digitalRead(motion_sensor); motion_read == HIGH)
+				digitalWrite(leds::yellow, HIGH);
+			else
+				digitalWrite(leds::yellow, LOW);
+
 			const uint32_t elapsed_secs = (millis() - start_time) / 1000;
 			const uint32_t remaining_secs = (milliseconds_for_exit / 1000) - elapsed_secs;
 
